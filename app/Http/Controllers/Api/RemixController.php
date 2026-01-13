@@ -10,17 +10,17 @@ class RemixController extends Controller
 {
     public function store(Request $request, RemixService $remixService)
     {
-        // TODO (candidate): validate request properly (min/max, required, string)
-        // TODO (candidate): generate exactly 4 variants via RemixService
-        // TODO (candidate): return { variants: [...] }
+        // Validate incoming text
+        $validated = $request->validate([
+            'text' => 'required|string|min:20|max:280',
+        ]);
 
+        // Generate 4 unique variants using RemixService
+        $variants = $remixService->variants($validated['text']);
+
+        // Return the variants as JSON
         return response()->json([
-            'variants' => [
-                $request->input('text', ''),
-                $request->input('text', ''),
-                $request->input('text', ''),
-                $request->input('text', ''),
-            ],
+            'variants' => $variants,
         ]);
     }
 }

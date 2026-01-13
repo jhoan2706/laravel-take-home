@@ -3,7 +3,7 @@ import axios from "axios";
 import { Head } from "@inertiajs/react";
 
 export default function Remix() {
-    const MAX_CHARS = 240;
+    const MAX_CHARS = 280;
 
     const [text, setText] = useState("");
     const [variants, setVariants] = useState([]);
@@ -62,7 +62,6 @@ export default function Remix() {
                         <textarea
                             className="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-4 min-h-[160px]"
                             value={text}
-                            maxLength={MAX_CHARS}
                             onChange={(e) => setText(e.target.value)}
                             placeholder="e.g. 3 reasons your reach is stalled..."
                         />
@@ -78,6 +77,13 @@ export default function Remix() {
                                 {remaining} characters remaining
                             </span>
                         </div>
+
+                        {/* Client-side validation messages */}
+                        {text.length > MAX_CHARS ? (
+                            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-600">
+                                Text must be 280 characters or fewer.
+                            </div>
+                        ) : null}
 
                         {error ? (
                             <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-600">
@@ -109,7 +115,7 @@ export default function Remix() {
                                         key={i}
                                         className="bg-gray-50 border border-gray-200 rounded-xl p-5 relative group"
                                     >
-                                        <div className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+                                        <div className="text-gray-800 leading-relaxed whitespace-pre-wrap break-words break-all">
                                             {v}
                                         </div>
                                         <button
